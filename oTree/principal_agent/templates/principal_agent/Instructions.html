@@ -1,0 +1,96 @@
+{% load otree staticfiles %}
+
+<div class="card bg-light instructions">
+    <div class="card-body">
+
+    <h3>
+        Instructions
+    </h3>
+
+    <p>
+        You have been randomly and anonymously paired with another player. Each
+        of you will be given 100 points to start and be randomly assigned to be either
+        Player A (the firm) or Player B (the worker). You will learn about your role
+        before making any decision.
+
+        It is common knowledge for all the participants the information about the
+        probability of wage offers that has been done in the past as well as the
+        effort level and its associated cost.
+
+        The firm will propose a wage offer (and cannot be rejected) to the worker,
+        ranging from {{ Constants.min_fixed_payment }} to {{ Constants.max_fixed_payment }}.
+        Subsequently, the worker will decide the corresponding
+        effort level that he perceived as an equivalent to the wage offer.
+
+        Effort level ranges from 0 to 1.
+    </p>
+    <p>
+        Participant A will propose a contract to B that has this component:
+    </p>
+    <ul>
+        <li><strong>Offered Wage</strong>, which can be any number from 0 to
+            100
+        </li>
+    </ul>
+
+    <p>
+        Once Participant A has submitted the contract, Participant B must
+        decide the effort level that he/she is willing to give
+    </p>
+    <ul>
+        <li><strong>Effort Level</strong>, which can be any number from 0.0 to 1.0 (e.g 0.1, 0.2)
+        </li>
+    </ul>
+    <p>
+        Effort is costly only to Participant B. <i>The
+        following table shows the relationship between B's effort, the cost of
+        effort, and the resulting total return:</i>
+    </p>
+    <table class=table>
+        <tr>
+            <th>Effort Level</th>
+            <td>0</td>
+            <td>0.1</td>
+            <td>0.2</td>
+            <td>0.3</td>
+            <td>0.4</td>
+            <td>0.5</td>
+            <td>0.6</td>
+            <td>0.7</td>
+            <td>0.8</td>
+            <td>0.9</td>
+            <td>1.0</td>
+        </tr>
+        <tr>
+
+            <th>Effort Cost</th>
+            <td>0</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>6</td>
+            <td>8</td>
+            <td>10</td>
+            <td>12</td>
+            <td>15</td>
+            <td>18</td>
+        </tr>
+
+    </table>
+    <p>
+        At the end of the round, Participant A(firm) will receive:<br/>
+        <strong>[(100) – (Worker's Wage)] * (Worker's Effort Level)]</strong><br/><!--
+        <strong>(100% – [B’s Return Share in %]) × [Total Return] – [B’s Fixed
+            Payment]</strong><br/>-->
+
+        and Participant B(worker) will receive:<br/>
+         <strong>(Wage Received) – (Cost of Effort) – 20 </strong>
+
+    </p>
+    <p>
+        Your payoff from the study is
+         <strong>{[(YOUR HIGHEST PAYOFF + YOUR LOWEST PAYOFF)/2]*1.5 + [20]}</strong>
+    </p>
+</div>
+</div>
