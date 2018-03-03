@@ -98,7 +98,7 @@ class ShuffleWaitPage(WaitPage):
 class Offer(Page):
 
     def is_displayed(self):
-        return self.player.role() == 'firm'
+        return self.player.role() == 'firm' and not self.group.isnint
 
     def vars_for_template(self):
         return {'wage':self.group.return_randomWage(), 'isnint':self.group.isnint}
@@ -106,18 +106,48 @@ class Offer(Page):
     timeout_seconds = 120
     form_model = 'group'
     form_fields = ['agent_fixed_pay']
-    #form_fields = ['agent_fixed_pay', 'agent_return_share']
+
+    def set_form_fields(self):
+        if(self.group.isnint):
+            form_fields = ['agent_fixed_pay', 'rand1', 'rand2']
+        else:
+            form_fields = ['agent_fixed_pay']
+
+        timeout_submission = {
+            'agent_fixed_pay': 0
+        }
+
+class OfferNINT(Page):
+
+    def is_displayed(self):
+        return self.player.role() == 'firm' and self.group.isnint
+
+    def vars_for_template(self):
+        return {'wage':self.group.return_randomWage(), 'isnint':self.group.isnint}
+
+    timeout_seconds = 120
+    form_model = 'group'
+    form_fields = ['rand1', 'rand2']
+
+    def set_form_fields(self):
+        if(self.group.isnint):
+            form_fields = ['agent_fixed_pay', 'rand1', 'rand2']
+        else:
+            form_fields = ['agent_fixed_pay']
 
     def timeout(self):
         if self.group.isnint==0:
             timeout_submission = {
                 'agent_fixed_pay': 0,
+                'rand1': 0,
+                'rand2': 0,
             }
         else:
             timeout_submission = {
                 'agent_fixed_pay': 0,
+                'rand1': 0,
+                'rand2': 0,
             }
-
 
 class OfferWaitPage(WaitPage):
     def vars_for_template(self):
@@ -138,6 +168,17 @@ class Accept(Page):
     timeout_seconds = 120
     def is_displayed(self):
         return self.player.role() == 'worker'
+
+    def calculate(self):
+        self.group.return_nintwage()
+
+    def vars_for_template(self):
+        if(self.group.isnint):
+            wage = self.group.return_nintwage()
+        else:
+            wage = self.group.agent_fixed_pay
+
+        return {'wage':wage}
 
     form_model = 'group'
     form_fields = ['agent_work_effort']
@@ -181,7 +222,7 @@ class FinalResults(Page):
         partners = []
 
         payoffs = [float(p.payoff) for p in self.player.in_all_rounds()]
-        partners = [p.partner for p in self.player.in_all_rounds()]
+        #partners = [p.partner for p in self.player.in_all_rounds()]
         sortedAscending = list(payoffs)
         sortedDescending = list(payoffs)
 
@@ -192,13 +233,14 @@ class FinalResults(Page):
         pay_off_divided = (max_payoff + min_payoff)/2.0
         finalPayoff = float(pay_off_divided) * 1.5 + Constants.base_pay
 
-        return {'max_payoff': max_payoff, 'min_payoff':min_payoff,'payoffs':payoffs, 'final_payoff':finalPayoff,'partners':partners}
+        return {'max_payoff': max_payoff, 'min_payoff':min_payoff,'payoffs':payoffs, 'final_payoff':finalPayoff}
 
 
 
 page_sequence = [
                  Introduction,
                  Offer,
+                 OfferNINT,
                  OfferWaitPage,
                  Accept,
                  ResultsWaitPage,

@@ -109,7 +109,7 @@ def return_from_effort(effort):
 
 class Subsession(BaseSubsession):
     def creating_session(self):
-        self.group_randomly()
+        self.group_randomly(fixed_id_in_group=True)
         treatment = itertools.cycle(['NIN-T', 'IN-T'])
         count = Constants.num_rounds
         current_round = self.round_number
@@ -127,129 +127,6 @@ class Subsession(BaseSubsession):
             count = count - 1
 
     pass
-
-    '''
-    def randomizeTreatment(self, player):
-        intctr = player.participant.vars['intctr']
-        nintctr = player.participant.vars['nintctr']
-        randnum = random.randint(0,1) #1 is int, 0 is nintctr
-        #if random number is 1 and the player hasnt played under intention treatment 8 times,
-        # assign the player to int treatment, update counter
-        if(randnum==1 and intctr < 8):
-            player.treatment ="IN-T"
-            player.participant.vars['intctr'] = player.participant.vars['intctr']+1
-        #if the random number is 1 and the player already played under intention treatment 8 times,
-        #assign the player to no intention treatment, update counter
-        elif(randnum==1  and intctr >= 8):
-            player.participant.vars['nintctr'] = player.participant.vars['nintctr'] + 1
-            player.treatment ="NIN-T"
-        # if random number is 0 and the player hasnt played under no intention treatment 8 times,
-        # assign the player to nint treatment, update counter
-        elif (randnum==0 and nintctr <8):
-            player.treatment ="N-INT"
-            player.participant.vars['nintctr'] = player.participant.vars['nintctr']+1
-        # if the random number is 0 and the player already played under no intention treatment 8 times,
-        # assign the player to intention treatment, update counter
-        elif(randnum==0  and nintctr>=8):
-            player.treatment = "I-NT"
-            player.participant.vars['intctr'] = player.participant.vars['intctr'] + 1 
-    '''
-
-    '''
-                second version (infinite loop)
-                    def creating_session(self):
-                    all_players = self.get_players()
-                    if self.round_number==1:
-                        self.group_randomly()
-                        treatment = itertools.cycle(['N-INT', 'IN-T'])
-                        count = Constants.num_rounds
-            
-                        for g in self.get_groups():
-                            g.treatment = next(treatment)
-                            if g.treatment =='N-INT':
-                                g.isnint = True;
-                            else:
-                                g.isnint = False;
-            
-                            for p in g.get_players():
-                                p.set_partner()
-                                p.participant.vars['roundpayoff'] = 0
-                                p.participant.vars['intctr'] = 0
-                                p.participant.vars['nintctr'] = 0
-                                p.treatment = g.treatment
-                    else:
-                        newAllPlayers = []
-                        treatment = itertools.cycle(['NIN-T', 'IN-T'])
-                        for p in all_players:
-                            nextTreatment = next(treatment)
-                            intctr = p.participant.vars['intctr']
-                            nintctr = p.participant.vars['nintctr']
-                            if (nextTreatment =='NIN-T' and nintctr <8):
-                                p.treatment = nextTreatment
-                                p.participant.vars['nintctr'] = p.participant.vars['nintctr'] + 1
-                            elif (nextTreatment == 'NIN-T' and nintctr >= 8):
-                                p.treatment = 'IN-T'
-                                p.participant.vars['intctr'] = p.participant.vars['intctr'] + 1
-                            elif(nextTreatment =='IN-T' and intctr <8):
-                                p.treatment = nextTreatment
-                                p.participant.vars['intctr'] = p.participant.vars['intctr'] + 1
-                            elif(nextTreatment =='IN-T' and intctr >=8):
-                                p.treatment = 'NIN-T'
-                                p.participant.vars['nintctr'] = p.participant.vars['nintctr'] + 1
-            
-                            newAllPlayers.append(p)
-                    INT = Constants.groupByINT(newAllPlayers)
-                        NINT = Constants.groupByNINT(newAllPlayers)
-            
-                        group_matrix = []
-            
-                        while INT:
-                            player1 = self.getRandomPlayer(INT)
-                            player2 = self.getRandomPlayer(INT)
-                            if(player1!=player2 and self.CheckIfNotPartners(player1,player2)and not(self.isInsideMatrix(group_matrix, player1))and not(self.isInsideMatrix(group_matrix, player2))):
-                                newGroup = [player1,player2]
-                                group_matrix.append(newGroup)
-                                INT.remove(player1)
-                                INT.remove(player2)
-            
-                        while NINT:
-                            player3 = self.getRandomPlayer(NINT)
-                            player4 = self.getRandomPlayer(NINT)
-                            if (player3 != player4 and self.CheckIfNotPartners(player3, player4) and not(self.isInsideMatrix(group_matrix, player3)) and not(self.isInsideMatrix(group_matrix, player4))):
-                                newGroup = [player3, player4]
-                                group_matrix.append(newGroup)
-                                NINT.remove(player3)
-                                NINT.remove(player4)
-            
-                        self.set_group_matrix(group_matrix)
-                '''
-
-
-    '''
-                randnum = random.randint(0, 1)  # 1 is int, 0 is nintctr
-                # if random number is 1 and the player hasnt played under intention treatment 8 times,
-                # assign the player to int treatment, update counter
-                if (randnum == 1 and intctr < 8):
-                    p.treatment = "IN-T"
-                    p.participant.vars['intctr'] = p.participant.vars['intctr'] + 1
-                # if the random number is 1 and the player already played under intention treatment 8 times,
-                # assign the player to no intention treatment, update counter
-                elif (randnum == 1 and intctr >= 8 and nintctr < 8):
-                    p.participant.vars['nintctr'] = p.participant.vars['nintctr'] + 1
-                    p.treatment = "NIN-T"
-                # if random number is 0 and the player hasnt played under no intention treatment 8 times,
-                # assign the player to nint treatment, update counter
-                elif (randnum == 0 and nintctr < 8):
-                    p.treatment = "N-INT"
-                    p.participant.vars['nintctr'] = p.participant.vars['nintctr'] + 1
-                # if the random number is 0 and the player already played under no intention treatment 8 times,
-                # assign the player to intention treatment, update counter
-                elif (randnum == 0 and nintctr >= 8 and intctr < 8):
-                    p.treatment = "I-NT"
-                    p.participant.vars['intctr'] = p.participant.vars['intctr'] + 1
-                '''
-
-
 
 
     def isInsideMatrix(self, matrix, player1):
@@ -277,6 +154,8 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     isnint = models.BooleanField(doc = """true if the group is under nint treatment""")
     treatment = models.StringField(doc="""treatment for the group IN-T/N-INT""")
+    rand1 = models.IntegerField(doc="randomnumber1")
+    rand2 = models.IntegerField(doc="randomnumber1")
 
     agent_fixed_pay = models.CurrencyField(
         doc="""Amount offered as fixed pay to agent""",
@@ -303,18 +182,24 @@ class Group(BaseGroup):
         agent = self.get_player_by_role('worker')
 
         self.agent_work_cost = cost_from_effort(self.agent_work_effort)
+
         #if round number is 1, set max and min payoff to initial payoff
 
         if self.treatment == "NIN-T":
+
             # money to be received by the firm for the round
-            agent.payoff = float(self.agent_fixed_pay - self.agent_work_cost - 20)
+            agent.payoff = float(int(self.agent_fixed_pay) - self.agent_work_cost - 20)
             # money to be received by the firm for the round
             # [(100) – wage] * effort
-            principal.payoff = float((100 - self.agent_fixed_pay) * self.agent_work_effort)
+            principal.payoff = float((100 - int(self.agent_fixed_pay)) * self.agent_work_effort)
 
         else:
             agent.payoff = float(self.agent_fixed_pay - self.agent_work_cost - 20)
             principal.payoff = float((100 - self.agent_fixed_pay) * self.agent_work_effort)
+
+    def return_nintwage(self):
+        concat = (self.rand1 *10) + (self.rand2*1)
+        self.agent_fixed_pay = Constants.return_wage(int(concat))
 
 
 
