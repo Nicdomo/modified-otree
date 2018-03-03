@@ -1,0 +1,34 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block title %}
+    Response
+{% endblock %}
+
+{% block content %}
+
+    <p>You are <strong>Player B</strong>. Player A has offered you a contract with the following details:</p>
+
+    <table class='table text-center' style='width: auto; margin: auto'>
+        <tr><th>Fixed payment</th></tr>
+        <tr><td>{{group.agent_fixed_pay}}</td></tr>
+    </table>
+
+    <div id="effort">
+    {% formfield group.agent_work_effort label='Please choose your level of effort' %}
+    </div>
+    <p id="payoffMsg"></p>
+
+    <p>
+    {% next_button %}
+    </p>
+
+    {% include Constants.instructions_template %}
+
+{% endblock %}
+
+{% block scripts %}
+
+
+
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block title %}
+    Propose a contract
+{% endblock %}
+
+{% block content %}
+
+        <p>
+            You are <strong>Participant A</strong> and you are under the <strong>No-Intention Treatment</strong>. A random wage is given to Player B.
+        </p>
+        <label>Fixed wage for the worker:</label>
+        <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <input readonly class="form-control" type="number"  id="random1" width="20px" name="rand1">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <input readonly class="form-control" type="number"  id="random2" width="20px" name="rand2">
+                    </div>
+                </div>
+
+        </div>
+
+        <a class="btn btn-info" id="generate">Generate Random Wage</a>
+    <!--
+
+     -->
+
+    <p></p>
+
+    {% next_button %}
+
+    {% include Constants.instructions_template %}
+
+{% endblock %}
+    {% block scripts %}
+        <script>
+        $(document).ready(function () {
+            $("#generate").click(function(event) {
+                counter  = 0
+                animationtimer = setInterval(function(){
+                    ++counter;
+                    rand1 = $('#random1');
+                    rand2 = $('#random2');
+                    rand1.val('' + Math.floor(Math.random(0,9) *10));
+                    rand2.val('' + Math.floor(Math.random(0,9) *10));
+                    if(counter >=5){
+
+                        clearInterval(animationtimer);
+                        $("#generate").hide();
+                        number = (rand1.val()*10)+(rand2.val()*1);
+                        wage = -1
+
+                        if(number>=0 && number<=6){
+                            wage = 30
+                        }else if (number>=7 && number<=8){
+                            wage = 10
+                        }else if (number >= 9 && number <=15){
+                            wage = 65
+                        }else if (number >= 16 && number <=19){
+                            wage = 45
+                        }else if (number >= 20 && number <=21){
+                            wage = 50
+                        }else if (number >= 22 && number <=26){
+                            wage = 40
+                        }else if (number>=27 && number<=39){
+                            wage = 15
+                        }else if (number >=40 && number <=46){
+                            wage = 60
+                        }else if (number >= 47 && number <=55){
+                            wage = 20
+                        }else if (number >= 56 && number <=62){
+                            wage = 55
+                        }else if (number >= 63 && number <=73){
+                            wage = 35
+                        }else if (number >= 74 && number <=75){
+                            wage = 75
+                        }else if (number >= 76 && number <=99){
+                            wage = 25
+                        }
+                        $('label').text('Fixed wage for the worker: '+wage);
+                    }
+                },50);
+            });
+        });
+        </script>
+    {% endblock %}
+

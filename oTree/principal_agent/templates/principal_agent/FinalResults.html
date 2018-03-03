@@ -1,0 +1,34 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+
+{% block title %}
+    Final Results
+{% endblock %}
+
+{% block content %}
+
+            <p>
+                The table below shows your payoff for each of the trading rounds
+            <p>
+            <table class="table table-condensed" style="width:auto">
+                <tr>
+                    <th>Payoff</th>
+
+                </tr>
+                {% for payoff in payoffs %}
+                <tr>
+                    <td>{{ payoff }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            <p>Your maximum payoff is {{max_payoff}} points.</p>
+            <p>Your minimum payoff is {{min_payoff}} points.</p>
+            <p>Your final payoff is {{final_payoff}} PHP.</p>
+
+    <p>{% next_button %}</p>
+
+    {% include Constants.instructions_template %}
+
+{% endblock %}

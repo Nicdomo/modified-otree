@@ -1,0 +1,40 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+
+{% block title %}
+    Results
+{% endblock %}
+
+{% block content %}
+
+            <p>
+            {% if player.role == 'worker' %}
+            You <strong>accepted</strong> the contract.
+            {% else %}
+            Participant B <strong>accepted</strong> your contract.
+            {% endif %}
+            <p>
+            <table class="table table-condensed" style="width:auto">
+                <tr>
+                    <th>Fixed payment</th>
+                    <th>Effort Level</th>
+                    <th>Effort Cost</th>
+                    <th>You Received</th>
+                </tr>
+                <tr>
+                    <td>{{ group.agent_fixed_pay }}</td>
+                    <td>{{ group.agent_work_effort }}</td>
+                    <td>{{ effort_cost }}</td>
+                    <td>{{ received }}</td>
+                </tr>
+            </table>
+
+            <p>Your payoff for the round is <strong>{{received}} </strong>.</p>
+
+
+    <p>{% next_button %}</p>
+
+    {% include Constants.instructions_template %}
+
+{% endblock %}
