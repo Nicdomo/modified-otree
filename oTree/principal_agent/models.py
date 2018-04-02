@@ -180,7 +180,7 @@ class Group(BaseGroup):
     def set_payoffs(self):
         principal = self.get_player_by_role('firm')
         agent = self.get_player_by_role('worker')
-
+        fixed_cost = 10
         self.agent_work_cost = cost_from_effort(self.agent_work_effort)
 
         #if round number is 1, set max and min payoff to initial payoff
@@ -188,13 +188,13 @@ class Group(BaseGroup):
         if self.treatment == "NIN-T":
 
             # money to be received by the firm for the round
-            agent.payoff = float(int(self.agent_fixed_pay) - self.agent_work_cost - 20)
+            agent.payoff = float(int(self.agent_fixed_pay) - self.agent_work_cost - fixed_cost)
             # money to be received by the firm for the round
             # [(100) – wage] * effort
             principal.payoff = float((100 - int(self.agent_fixed_pay)) * self.agent_work_effort)
 
         else:
-            agent.payoff = float(self.agent_fixed_pay - self.agent_work_cost - 20)
+            agent.payoff = float(self.agent_fixed_pay - self.agent_work_cost - fixed_cost)
             principal.payoff = float((100 - self.agent_fixed_pay) * self.agent_work_effort)
 
     def return_nintwage(self):
